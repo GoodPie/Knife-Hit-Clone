@@ -5,7 +5,7 @@ namespace GoodPie.Scripts
 	public class CircleRotation : MonoBehaviour
 	{
 		[Tooltip("How fast the circle will rotate")]
-		public float RotationSpeed = 100f;
+		public float RotationSpeed = 250f;
 
 		public bool MovingRight = false;
 
@@ -17,6 +17,7 @@ namespace GoodPie.Scripts
 			if (MovingRight)
 				actualRotationSpeed = -RotationSpeed;
 			
+			// Rotate on its axis
 			transform.Rotate(Vector3.forward * Time.deltaTime * actualRotationSpeed);
 
 			

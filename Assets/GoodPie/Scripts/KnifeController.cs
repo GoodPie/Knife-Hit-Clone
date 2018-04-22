@@ -52,7 +52,8 @@ public class KnifeController : MonoBehaviour
 		// Apply force if we have launched the knife
 		if (_hasLaunched)
 		{
-			_rigidBody.AddForce(Vector2.up * ThrowForce);
+			_rigidBody.AddForce(Vector2.up * ThrowForce, ForceMode2D.Impulse);
+			_hasLaunched = false;
 		}
 	}
 
@@ -69,6 +70,11 @@ public class KnifeController : MonoBehaviour
 
 			_rigidBody.Sleep();
 
+		} 
+		else if (other.transform.CompareTag("Knife"))
+		{
+			_hasLaunched = false;
 		}
+		
 	}
 }
