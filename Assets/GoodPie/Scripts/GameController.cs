@@ -14,8 +14,10 @@ namespace GoodPie.Scripts
 		[Tooltip("The players current score")]
 		public int CurrentScore = 0;
 		
+		[Tooltip("The current level the player is on")]
 		public int CurrentStage = 0;
 
+		[Tooltip("The currently used knife. May change for cosmetic purposes")]
 		public GameObject KnifeInUse;
 
 	}

@@ -40,9 +40,7 @@ public class KnifeController : MonoBehaviour
 		if (HasLanded)
 		{
 			// Start rotating 
-			var rotationSpeed = _rotationProperties.RotationSpeed;
-			if (_rotationProperties.MovingRight)
-				rotationSpeed *= -1;
+			var rotationSpeed = _rotationProperties.CurrentRotationSpeed;
 			transform.RotateAround(Circle.transform.position, transform.forward, rotationSpeed * Time.deltaTime);
 		}
 	}
