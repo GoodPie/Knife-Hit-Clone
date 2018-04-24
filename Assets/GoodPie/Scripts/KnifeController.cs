@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using GoodPie.Scripts;
+using GoodPie.Scripts.Circle;
+using GoodPie.Scripts.Utilities;
 using UnityEngine;
 
 public class KnifeController : MonoBehaviour
@@ -65,9 +67,10 @@ public class KnifeController : MonoBehaviour
 			// Make object stick
 			_rigidBody.isKinematic = true;
 			_rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+			
+			Circle.GetComponent<FlashOnHit>().BeginFlash();;
 
 			_rigidBody.Sleep();
-
 		} 
 		else if (other.transform.CompareTag("Knife"))
 		{

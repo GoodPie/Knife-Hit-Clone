@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GoodPie.Scripts
+namespace GoodPie.Scripts.Circle
 {
 	public class CircleRotation : MonoBehaviour
 	{

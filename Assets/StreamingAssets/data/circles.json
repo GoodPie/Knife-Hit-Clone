@@ -1,0 +1,23 @@
+﻿{
+  "Circles" : [
+    {
+    "Name":"Default",
+    "SpriteLocation": "Cicles/Default",
+    "MaxRotationSpeed": 250,
+    "IsBoss":false, 
+    "Difficulty": 1,
+    "BossKnifeDrop":-1,
+    "BossSpecialComponent": null
+    },
+    {
+    "Name":"Default",
+    "SpriteLocation": "Cicles/Default",
+    "MaxRotationSpeed": 350,
+    "Difficulty": 1,
+    "IsBoss":false,
+    "BossKnifeDrop":-1,
+    "BossSpecialComponent": null
+    }
+  ]
+    
+}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GoodPie.Scripts.Models;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GoodPie.Scripts
@@ -19,6 +20,11 @@ namespace GoodPie.Scripts
 
 		[Tooltip("The currently used knife. May change for cosmetic purposes")]
 		public GameObject KnifeInUse;
+
+		[Tooltip("Manages the data required for the game")]
+		public DataController DataController;
+
+
 
 	}
 }
