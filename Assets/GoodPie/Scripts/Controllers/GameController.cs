@@ -13,8 +13,11 @@ namespace GoodPie.Scripts.Controllers
 
 		[Tooltip("The players current score")]
 		public int CurrentScore = 0;
+
+
+		public int CurrentLevel = 0;
 		
-		[Tooltip("The current level the player is on")]
+		[Tooltip("The current stage (sub level) the player is on")]
 		public int CurrentStage = 0;
 
 		[Tooltip("The currently used knife. May change for cosmetic purposes")]
@@ -23,7 +26,71 @@ namespace GoodPie.Scripts.Controllers
 		[Tooltip("Manages the data required for the game")]
 		public DataController DataController;
 
+		public Level LevelDetails;
 
+		public GameObject BaseCircle;
+		public Models.Circle CircleDetails;
+		public GameObject CurrentCircle;
 
+		private void Start()
+		{
+			RestartGame();
+		}
+
+		private void RestartGame()
+		{
+			// Generate a new level
+			LevelDetails = Level.GenerateLevel(0, DataController.PickRandomBossCircle());
+			MaxKnives = LevelDetails.MaxKnives;
+			CurrentKnives = LevelDetails.MaxKnives;
+			ChooseNewCircle();
+		}
+
+		private void SetupNewLevel()
+		{
+			LevelDetails = Level.GenerateLevel(GetDifficulty(), DataController.PickRandomBossCircle());
+			MaxKnives = LevelDetails.MaxKnives;
+			CurrentKnives = LevelDetails.MaxKnives;
+			ChooseNewCircle();
+		}
+
+		private int GetDifficulty()
+		{
+			int difficulty = (CurrentStage / 5) + 1;
+			return difficulty;
+		}
+
+		public void ChooseNewCircle()
+		{
+			int difficulty = (CurrentStage / 5) + 1;
+			CircleDetails = DataController.PickRandomStandardCircle(difficulty);
+			CircleDetails.Initialize(BaseCircle);
+			CurrentCircle = Instantiate(CircleDetails.DefaultCircle);
+		}
+
+		public void CompletedStage()
+		{
+			CurrentStage += 1;
+			if (CurrentStage >= LevelDetails.Stages)
+			{
+				CurrentLevel += 1;
+				CurrentStage = 0;
+				SetupNewLevel();
+			}
+
+			if (CurrentStage >= LevelDetails.Stages - 1)
+			{
+				// TODO: Intiialize boss
+			}
+
+			CurrentKnives = LevelDetails.MaxKnives;
+			Destroy(CurrentCircle);
+			ChooseNewCircle();
+		}
+
+		public void HitCollidable()
+		{
+			RestartGame();
+		}
 	}
 }

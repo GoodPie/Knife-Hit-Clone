@@ -11,19 +11,19 @@ namespace GoodPie.Scripts.Models
 
         public int MaxKnives;
         public int Stages;
-        public string Boss;
+        public Circle Boss;
 
-        public Level(int maxKnives, int stages, string boss)
+        public Level(int maxKnives, int stages, Circle boss)
         {
             MaxKnives = maxKnives;
             Stages = stages;
             Boss = boss;
         }
 
-        private static Level GenerateLevel(int difficulty, string boss)
+        public static Level GenerateLevel(int difficulty, Circle boss)
         {
-            var knives = DefaultKnives + (difficulty % 5);
-            var stages = DefaultStages + (difficulty % 10);
+            int knives = DefaultKnives + (difficulty / 5);
+            int stages = DefaultStages + (difficulty / 10);
             return new Level(knives, stages, boss);
         }
 

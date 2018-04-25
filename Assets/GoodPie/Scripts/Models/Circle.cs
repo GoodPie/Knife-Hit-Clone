@@ -16,8 +16,8 @@ namespace GoodPie.Scripts.Models
 		public int BossKnifeDrop = -1;
 		public string BossSpecialComponent;
 		
-
-		private GameObject _defaultCircle;
+		[NonSerialized]
+		public GameObject DefaultCircle;
 
 		public Circle()
 		{
@@ -48,8 +48,8 @@ namespace GoodPie.Scripts.Models
 
 		public void Initialize(GameObject circle)
 		{
-			_defaultCircle = circle;
-			var sprite = Resources.Load(SpriteLocation) as Sprite;
+			DefaultCircle = circle;
+			var sprite = Resources.Load<Sprite>(SpriteLocation);
 			circle.GetComponent<SpriteRenderer>().sprite = sprite;
 			circle.GetComponent<CircleRotation>().MaxRotationSpeed = MaxRotationSpeed;
 		}

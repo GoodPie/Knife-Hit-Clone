@@ -11,6 +11,7 @@ namespace GoodPie.Scripts.Models
         public string SpriteLocation;
         public int Rarity;
 
+        [NonSerialized]
         private GameObject _defaultKnife;
     
         public Knife() {}

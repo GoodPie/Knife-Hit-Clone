@@ -15,10 +15,8 @@ public class KnifeController : MonoBehaviour
 	private Rigidbody2D _rigidBody;
 
 	private bool _hasLaunched = false;
-	public bool HasLanded = false;
 
 	public GameObject Circle;
-	private CircleRotation _rotationProperties;
 
 	private void Awake()
 	{
@@ -28,23 +26,11 @@ public class KnifeController : MonoBehaviour
 	private void Start()
 	{
 		Circle = GameObject.FindWithTag("Circle");
-		_rotationProperties = Circle.GetComponent<CircleRotation>();
 	}
 
 	public void Launch()
 	{
 		_hasLaunched = true;
-		Debug.Log("Launched Knife");
-	}
-
-	private void Update()
-	{
-		if (HasLanded)
-		{
-			// Start rotating 
-			var rotationSpeed = _rotationProperties.CurrentRotationSpeed;
-			transform.RotateAround(Circle.transform.position, transform.forward, rotationSpeed * Time.deltaTime);
-		}
 	}
 
 	private void FixedUpdate()
@@ -62,13 +48,14 @@ public class KnifeController : MonoBehaviour
 		if (other.transform.CompareTag("Circle"))
 		{
 			_hasLaunched = false;
-			HasLanded = true;
 			
 			// Make object stick
 			_rigidBody.isKinematic = true;
 			_rigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+
+			transform.parent = other.transform;
 			
-			Circle.GetComponent<FlashOnHit>().BeginFlash();;
+			Circle.GetComponent<FlashOnHit>().BeginFlash();
 
 			_rigidBody.Sleep();
 		} 

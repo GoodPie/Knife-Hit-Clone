@@ -30,22 +30,46 @@ namespace GoodPie.Scripts.Controllers
 		// The main types of data we are going to load for a our game is the circles and the knives
 		private static readonly string CircleDataFile = "/data/circles.json";
 		private static readonly string KnifeDataFile = "/data/knives.json";
-		public Models.Circle[] Circles;
+		private static readonly string PlayerSaveFile = "/data/save.json";
+		public List<Models.Circle> StandardCircles = new List<Models.Circle>();
+		public List<Models.Circle> BossCircles = new List<Models.Circle>();
 		public Knife[] Knives;
+		public PlayerSave PlayerSave;
 
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
 
 			// Load all the data required
-			Circles = ReadDataToCollection<CircleCollection>(CircleDataFile).Circles;
-			Knives = ReadDataToCollection<KnifeCollection>(KnifeDataFile).Knives;
+			var allCircles = ReadJSONFromFile<CircleCollection>(CircleDataFile).Circles;
+			SeperateBossAndStandardCircles(allCircles);
+			Knives = ReadJSONFromFile<KnifeCollection>(KnifeDataFile).Knives;
+			PlayerSave = ReadJSONFromFile<PlayerSave>(PlayerSaveFile);
+			if (PlayerSave == null)
+			{
+				PlayerSave = new PlayerSave();
+			}
 		}
 
-		public Models.Circle PickRandomCircle(int difficulty)
+		private void SeperateBossAndStandardCircles(Models.Circle[] allCircles)
+		{
+			foreach (Models.Circle circle in allCircles)
+			{
+				if (circle.IsBoss)
+				{
+					BossCircles.Add(circle);
+				}
+				else
+				{
+					StandardCircles.Add(circle);
+				}
+			}
+		}
+
+		public Models.Circle PickRandomStandardCircle(int difficulty)
 		{
 			List<Models.Circle> circlesWithDifficulty = new List<Models.Circle>();
-			foreach (var circle in Circles)
+			foreach (var circle in StandardCircles)
 			{
 				if (circle.Diffuculty == difficulty)
 				{
@@ -55,24 +79,24 @@ namespace GoodPie.Scripts.Controllers
 
 			if (circlesWithDifficulty.Count == 0 && difficulty > 0)
 			{
-				PickRandomCircle(difficulty - 1);
+				PickRandomStandardCircle(difficulty - 1);
 			}
 
-			if (difficulty - 1 == 0)
+			if (circlesWithDifficulty.Count == 0 && difficulty - 1 == 0)
 			{
 				throw new InvalidDataException("Failed to find any circles with any difficulty");
 			}
 
-			int chosenIndex = Random.Range(0, circlesWithDifficulty.Count - 1);
+			int chosenIndex = Random.Range(0, circlesWithDifficulty.Count);
 			return circlesWithDifficulty[chosenIndex];
 		}
 
-		public Models.Circle FindCircleByName(string name)
+		public Models.Circle GetStandardCircleByName(string name)
 		{
 			Models.Circle foundCircle = null;
-			foreach (var circle in Circles)
+			foreach (var circle in StandardCircles)
 			{
-				if (circle.Name.Equals(name))
+				if (circle.Name.Equals(name) && circle.IsBoss == false) 
 				{
 					foundCircle = circle;
 					break;
@@ -80,6 +104,12 @@ namespace GoodPie.Scripts.Controllers
 			}
 
 			return foundCircle;
+		}
+
+		public Models.Circle PickRandomBossCircle()
+		{
+			var choice = Random.Range(0, BossCircles.Count);
+			return BossCircles[choice];
 		}
 
 		public Knife FindKnifeByName(string name)
@@ -113,13 +143,12 @@ namespace GoodPie.Scripts.Controllers
 		}
 
 		/// <summary>
-		/// Generic function to handle reading in data from JSON (in array format) into a collection which in this case
-		/// is just a wrapper for an array
+		/// Reads JSON to new object from a readonly location (streaming assets)
 		/// </summary>
-		/// <param name="dataPath">Data path, within the streaming assets directory</param>
-		/// <typeparam name="T">Collection type</typeparam>
-		/// <returns>Collection type</returns>
-		private static T ReadDataToCollection<T>(string dataPath)
+		/// <param name="dataPath"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		private static T ReadJSONFromFile<T>(string dataPath)
 		{
 			var actualDataPath = Application.streamingAssetsPath + dataPath;
 			if (File.Exists(actualDataPath))

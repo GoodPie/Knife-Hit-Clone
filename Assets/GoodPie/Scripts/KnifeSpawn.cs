@@ -22,6 +22,8 @@ namespace GoodPie.Scripts
 		{
 			// Create the first knife
 			CurrentKnife = Instantiate(GameController.KnifeInUse);
+			CurrentKnife.transform.position = transform.position;
+			CurrentKnife.transform.parent = transform;
 		}
 
 		private void Update()
@@ -39,7 +41,7 @@ namespace GoodPie.Scripts
 			}
 			else
 			{
-				// Handle input for mouse
+				// Handle input for Souse
 				triggerDown = Input.GetMouseButtonDown(0);
 			}
 		
@@ -49,7 +51,12 @@ namespace GoodPie.Scripts
 				{
 					// We have run out of knives so just ensure that we can't throw if we are out
 					// This will be handled by GameController as well
-					if (GameController.CurrentKnives <= 0) return;
+					if (GameController.CurrentKnives <= 0)
+					{
+						GameController.CompletedStage();
+						CurrentKnife = Instantiate(GameController.KnifeInUse);
+						return;
+					}
 				
 					// Knife can spawn so throw knife and update variables
 					var knifeController = CurrentKnife.GetComponent<KnifeController>();
@@ -83,7 +90,7 @@ namespace GoodPie.Scripts
 				_knifeThrown = false;
 
 				// Create the next knife if we have any left
-				if (GameController.CurrentKnives <= 0) return;
+				if (GameController.CurrentKnives < 0) return;
 				CurrentKnife = Instantiate(GameController.KnifeInUse);
 			}
 		}
