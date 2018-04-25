@@ -1,8 +1,7 @@
 ﻿using GoodPie.Scripts.Models;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace GoodPie.Scripts
+namespace GoodPie.Scripts.Controllers
 {
 	public class GameController : MonoBehaviour
 	{

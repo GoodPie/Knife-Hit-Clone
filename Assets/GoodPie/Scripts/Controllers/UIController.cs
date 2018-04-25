@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using GoodPie.Scripts;
+using GoodPie.Scripts.Controllers;
 using UnityEngine;
 using UnityEngine.UI;
 

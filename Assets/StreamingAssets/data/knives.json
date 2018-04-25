@@ -1,0 +1,11 @@
+﻿{
+  "Knives" : [
+    {
+      "ID": 0,
+      "Name": "Default",
+      "SpriteLocation": "Knives/Default",
+      "Rarity": 1
+    }
+  ]
+    
+}
