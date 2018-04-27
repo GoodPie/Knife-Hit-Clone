@@ -14,11 +14,10 @@ namespace GoodPie.Scripts.Controllers
 		[Tooltip("The players current score")]
 		public int CurrentScore = 0;
 
-
-		public int CurrentLevel = 0;
+		public int CurrentLevel = 1;
 		
 		[Tooltip("The current stage (sub level) the player is on")]
-		public int CurrentStage = 0;
+		public int CurrentStage = 1;
 
 		[Tooltip("The currently used knife. May change for cosmetic purposes")]
 		public GameObject KnifeInUse;
@@ -37,8 +36,21 @@ namespace GoodPie.Scripts.Controllers
 			RestartGame();
 		}
 
-		private void RestartGame()
+		private void Update()
 		{
+			if (CurrentKnives <= 0)
+			{
+				CompletedStage();
+			}
+		}
+
+		public void RestartGame()
+		{
+			Destroy(CurrentCircle);
+
+			CurrentStage = 1;
+			CurrentLevel = 0;
+			
 			// Generate a new level
 			LevelDetails = Level.GenerateLevel(0, DataController.PickRandomBossCircle());
 			MaxKnives = LevelDetails.MaxKnives;
@@ -48,6 +60,8 @@ namespace GoodPie.Scripts.Controllers
 
 		private void SetupNewLevel()
 		{
+			Destroy(CurrentCircle);
+			
 			LevelDetails = Level.GenerateLevel(GetDifficulty(), DataController.PickRandomBossCircle());
 			MaxKnives = LevelDetails.MaxKnives;
 			CurrentKnives = LevelDetails.MaxKnives;
@@ -68,10 +82,21 @@ namespace GoodPie.Scripts.Controllers
 			CurrentCircle = Instantiate(CircleDetails.DefaultCircle);
 		}
 
+		public void LaunchedKnife()
+		{
+			CurrentKnives -= 1;
+		}
+
+		public bool HasKnives()
+		{
+			return CurrentKnives > 0;
+		}
+		
+
 		public void CompletedStage()
 		{
 			CurrentStage += 1;
-			if (CurrentStage >= LevelDetails.Stages)
+			if (CurrentStage > LevelDetails.Stages)
 			{
 				CurrentLevel += 1;
 				CurrentStage = 0;

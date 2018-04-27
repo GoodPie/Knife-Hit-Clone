@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 58697975372117126}
   - component: {fileID: 114967579268277678}
   m_Layer: 0
-  m_Name: SpinningCircle
+  m_Name: BaseCircle
   m_TagString: Circle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
